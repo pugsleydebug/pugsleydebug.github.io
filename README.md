@@ -1,5 +1,3 @@
-# pugsleydebug.github.io
-
 # Hello!, I’am Pugsley!
 
 # Also known as @pugsley.tech or @pugsley.vr on tiktok
