@@ -11,4 +11,5 @@
 
 # alright bye.
 
-# ps: this website will get updated when pugsley wants to.
+# ps: this website will most likely not get updated :P
+# last update: March 26 2026, 7:15PM PST (Philippine Standard Time)
