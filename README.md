@@ -7,6 +7,7 @@
 # I actually dont know why i’m making this just wanted to do something.
 
 # also heres my linktree:
+# linktr.ee/pugsley.tech
 
 # i’m bored.
 
