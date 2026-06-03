@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me | GitHub</title>
+    <title id="siteTitle">About Me | GitHub</title>
     <style>
         :root {
             --bg: #0d1117;
@@ -21,10 +21,13 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            align-items: flex-start;
             overflow-x: hidden;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
         
-        /* Rain Container - Kept at z-index 1 */
+        /* Rain Container */
         .rain {
             position: fixed;
             top: 0;
@@ -32,7 +35,7 @@
             width: 100%;
             height: 100%;
             z-index: 1; 
-            pointer-events: none; /* Crucial: allows clicks to pass through to the button */
+            pointer-events: none;
         }
         
         .drop {
@@ -45,14 +48,13 @@
         }
         
         @keyframes fall {
-            to {
-                margin-top: 100vh;
-            }
+            to { margin-top: 100vh; }
         }
 
+        /* Main GitHub Box */
         .wrapper {
             position: relative;
-            z-index: 5; /* Pushed forward so it sits in front of the rain */
+            z-index: 5;
             width: 100%;
             max-width: 850px;
             background: var(--box-bg);
@@ -78,7 +80,7 @@
             font-weight: 400;
         }
         
-        /* Clickable Version Badge */
+        /* Version Badge */
         .version-badge {
             background-color: rgba(56, 139, 253, 0.1);
             color: var(--link);
@@ -90,7 +92,7 @@
             border: 1px solid var(--border);
             transition: transform 0.2s;
             position: relative;
-            z-index: 10; /* Ensures the button itself is on top and clickable */
+            z-index: 10;
         }
         .version-badge:hover {
             transform: scale(1.05);
@@ -116,49 +118,63 @@
         ul { padding-left: 20px; }
         li { margin-bottom: 8px; }
 
-        /* Secret Confession Modal Overlay - FORCED TO THE VERY FRONT */
-        .modal-overlay {
+        /* Full Screen Confession Layout */
+        .confession-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); /* Slightly transparent dark backing */
-            display: none; /* Controlled by JavaScript */
+            background: #000000; 
+            display: none; 
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999; /* Highest layer possible */
-        }
-        .modal-content {
-            background: #161b22;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             text-align: center;
-            max-width: 450px;
-            width: 80%;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #ec6cb9; /* Nice pink accent for the confession */
-            border: 1px solid var(--border);
-            z-index: 10000;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        @keyframes popIn {
-            0% { transform: scale(0.7); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .confession-content {
+            max-width: 600px;
+            text-align: center;
         }
-        .modal-content h1 { font-size: 2.5rem; margin-bottom: 15px; }
-        .modal-content p { color: var(--text); font-size: 1.2rem; }
+        
+        /* Small Typography Settings */
+        .confession-content h1 {
+            font-size: 1.8rem; 
+            margin-bottom: 25px;
+            color: #ec6cb9; 
+            font-weight: 600;
+        }
+        .confession-content p {
+            color: #c9d1d9;
+            font-size: 1.05rem; 
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        /* Blinking Typewriter Cursor */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: #ec6cb9;
+            margin-left: 4px;
+            animation: blink 0.6s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
     
-    <!-- Rain Container -->
     <div class="rain" id="rainContainer"></div>
 
-    <div class="wrapper">
+    <div class="wrapper" id="mainProfile">
         <div class="header">
             <div class="repo-title">
                 <span>pugsley /</span> about-me
             </div>
-            <!-- THE CLICKABLE VERSION CODE -->
-            <div class="version-badge" onclick="revealSecret()">Latest release: v67</div>
+            <div class="version-badge" onclick="revealSecret()">Latest release: v1.0.0</div>
         </div>
 
         <div class="readme-box">
@@ -166,13 +182,13 @@
                 📖 README.md
             </div>
             <div class="readme-content">
-                <h2>Hi there, I'm Pugsley 👋</h2>
+                <h2>Hi there, I'm pugsley 👋</h2>
                 <p>Welcome to my official GitHub profile page. Here is a little bit about who I am and what I like to do.</p>
                 
                 <h3>🚀 About Me</h3>
                 <ul>
                     <li>📚 Currently focusing on my studies / career goals</li>
-                    <li>🎧 Huge fan of music </li>
+                    <li>🎧 Huge fan of music, current favorites include everything</li>
                     <li>☕ Can be easily bribed with iced coffee or good food</li>
                     <li>⚡ Fun fact: I might have left a secret somewhere on this page...</li>
                 </ul>
@@ -183,20 +199,14 @@
         </div>
     </div>
 
-    <!-- SECRET POPUP WINDOW -->
-    <div class="modal-overlay" id="secretModal">
-        <div class="modal-content">
-            <h1>Dear Ren.</h1>
-            <p>In the quiet corners of my chaotic world, your voice</p>
-            <p>is a soft lullaby that puts my restless heart at ease.<p>
-            <p>You've shown me a kind of gentle understanding I<p>
-            <p>never knew existed, and my days are brighter simply<p>
-            <p>because you're in them.<p>
-
-            <p>Thank you for being the calm in my storm<p>
-
-            <p>Yes, I truly, <span style="color: #ec6cb9;">love you</span> too. Even though I dont act like it, just know I do.
-            <p>Always, pugsley</p>
+    <div class="confession-screen" id="secretScreen">
+        <div class="confession-content">
+            <h1 id="typeH1"></h1>
+            <p id="typeP1"></p>
+            <p id="typeP2"></p>
+            <p id="typeP3"></p>
+            <p id="typeP4"></p>
+            <p id="typeP5"></p>
         </div>
     </div>
 
@@ -214,10 +224,59 @@
             rainContainer.appendChild(drop);
         }
 
-        // The Reveal Function
+        // Configuration with your custom letter
+        const lines = [
+            { id: "typeH1", text: "Dear Ren." },
+            { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
+            { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
+            { id: "typeP3", text: "Thank you for being the calm in my storm." },
+            { id: "typeP4", text: "Yes, I truly, love you too. Even though I dont act like it, just know I do." },
+            { id: "typeP5", text: "Always, pugsley" }
+        ];
+
+        const speed = 25; 
+
         function revealSecret() {
-            console.log("Button clicked!"); // Double check in console
-            document.getElementById('secretModal').style.display = 'flex';
+            document.getElementById('mainProfile').style.display = 'none';
+            document.title = "for ren";
+            document.getElementById('secretScreen').style.display = 'flex';
+            typeLine(0);
+        }
+
+        function typeLine(lineIndex) {
+            if (lineIndex >= lines.length) return; 
+
+            const currentLine = lines[lineIndex];
+            const element = document.getElementById(currentLine.id);
+            let text = currentLine.text;
+            let charIndex = 0;
+
+            const cursor = document.createElement('span');
+            cursor.classList.add('cursor');
+            element.appendChild(cursor);
+
+            function nextChar() {
+                if (charIndex < text.length) {
+                    // Perfect highlight match for "love you"
+                    if (text.substring(charIndex).startsWith("love you")) {
+                        const span = document.createElement('span');
+                        span.style.color = '#ec6cb9';
+                        span.style.fontWeight = 'bold';
+                        span.innerText = "love you";
+                        element.insertBefore(span, cursor);
+                        charIndex += 8; 
+                    } else {
+                        const textNode = document.createTextNode(text[charIndex]);
+                        element.insertBefore(textNode, cursor);
+                        charIndex++;
+                    }
+                    setTimeout(nextChar, speed);
+                } else {
+                    cursor.remove();
+                    typeLine(lineIndex + 1);
+                }
+            }
+            nextChar();
         }
     </script>
 </body>
