@@ -180,3 +180,190 @@
     </style>
 </head>
 <body>
+    
+    <div class="rain" id="rainContainer"></div>
+
+    <div class="wrapper" id="mainProfile" onclick="event.stopPropagation();">
+        <div class="header">
+            <div class="repo-title">
+                <a href="YOUR_LINK_HERE" class="repo-redirect-link">pugsley</a> / about-me
+            </div>
+            
+            <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
+                Release v2.0
+            </div>
+        </div>
+
+        <div class="readme-box">
+            <div class="readme-header">
+               README.md
+            </div>
+            
+            <div class="readme-content">
+                <h2>Hi there, I'm pugsley</h2>
+                <p>Welcome to my official About Me page. Here is a little bit about who I am and what I like to do.</p>
+                
+                <h3>🚀 About Me</h3>
+                <ul>
+                    <li>Currently focusing on my studies / career goals</li>
+                    <li>Huge fan of music, current favorites include everything</li>
+                    <li>Can be easily bribed with iced coffee or good food</li>
+                    <li>Fun fact: I might have left a secret somewhere on this page...</li>
+                </ul>
+
+                <h3>🛠️ Tech & Hobbies</h3>
+                <p>HTML, CSS, overthinking, and making websites instead of texting my feelings directly.</p>
+                <p style="font-size: 13px; color: var(--muted);">Learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it)</p>
+                <p>I also develop on Roblox Studio :P </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="confession-screen" id="secretScreen" onclick="event.stopPropagation();">
+        <div class="confession-content">
+            <h1 id="typeH1"></h1>
+            <p id="typeP1"></p>
+            <p id="typeP2"></p>
+            <p id="typeP3"></p>
+            <p id="typeP4"></p>
+            <p id="typeP5"></p>
+            <div id="delayedMsg" class="follow-up-msg">please reply often, yk i'm worried about you</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. OVERWRITE THE CONSOLE OBJECT IMMEDIATELY ---
+        (function () {
+            const block = () => { return false; };
+            Object.defineProperty(window, 'console', {
+                value: {
+                    log: block,
+                    warn: block,
+                    error: block,
+                    info: block,
+                    clear: block,
+                    debug: block,
+                    assert: block
+                },
+                writable: false,
+                configurable: false
+            });
+        })();
+
+        // --- 2. CONSOLE ATTACK LOOP & SHORTCUT BLOCKERS ---
+        
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) return false; 
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
+        };
+
+        setInterval(function() {
+            try { window.console.clear(); } catch(e){}
+            
+            const freeze = function(i) {
+                if (("" + i / i).length !== 1 || i % 20 === 0) {
+                    (function() {}.constructor("debugger")());
+                } else {
+                    (function() {}.constructor("debugger")());
+                }
+                freeze(++i);
+            };
+            try { freeze(0); } catch (e) {}
+        }, 5);
+
+
+        // --- 3. NEW BACKGROUND TRIGGER MECHANIC ---
+        // Attaches the secret listener to the body background outside the main card window
+        document.body.addEventListener('click', function() {
+            revealSecret();
+        });
+
+
+        // --- 4. SITE INTERACTION LOOPS ---
+
+        const rainContainer = document.getElementById('rainContainer');
+        const dropCount = 100;
+
+        for (let i = 0; i < dropCount; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = Math.random() * 0.5 + 0.8 + 's'; 
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+
+        const lines = [
+            { id: "typeH1", text: "<span style='color: #ffffff;'>Dear</span> <span style='color: #ff3333; text-shadow: 0 0 8px #ff3333;'>Ren</span>." },
+            { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
+            { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
+            { id: "typeP3", text: "Thank you for being the calm in my storm." },
+            { id: "typeP4", text: "Yes, I truly, love you too." },
+            { id: "typeP5", text: "love you aswell :D, <span style='color: #d600ff; text-shadow: 0 0 8px #d600ff; font-weight: bold;'>pugsley</span>" }
+        ];
+
+        const speed = 25; 
+
+        function trollBadge(element) {
+            if (element.innerText !== "not here lmao") {
+                element.innerText = "not here lmao";
+                element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
+                element.style.color = "#f85149"; 
+                element.style.borderColor = "#f85149";
+                
+                setTimeout(() => {
+                    element.style.opacity = "0";
+                    setTimeout(() => { element.style.display = "none"; }, 500);
+                }, 5000);
+            }
+        }
+
+        function revealSecret() {
+            document.getElementById('mainProfile').style.display = 'none';
+            document.title = "for ren";
+            document.getElementById('secretScreen').style.display = 'flex';
+            typeLine(0);
+        }
+
+        function typeLine(lineIndex) {
+            if (lineIndex >= lines.length) {
+                setTimeout(() => {
+                    document.getElementById('delayedMsg').style.opacity = "1";
+                }, 2000);
+                return; 
+            }
+
+            const currentLine = lines[lineIndex];
+            const element = document.getElementById(currentLine.id);
+            let text = currentLine.text;
+            let charIndex = 0;
+
+            function nextChar() {
+                if (charIndex < text.length) {
+                    if (text[charIndex] === '<') {
+                        let tagCloseIndex = text.indexOf('>', charIndex);
+                        if (tagCloseIndex !== -1) {
+                            charIndex = tagCloseIndex + 1;
+                        }
+                    }
+                    
+                    let parsedText = text.substring(0, charIndex);
+                    parsedText = parsedText.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    
+                    element.innerHTML = parsedText + '<span class="cursor"></span>';
+                    charIndex++;
+                    setTimeout(nextChar, speed);
+                } else {
+                    let finalParsed = text.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    element.innerHTML = finalParsed;
+                    typeLine(lineIndex + 1);
+                }
+            }
+            nextChar();
+        }
+    </script>
+</body>
+</html>
