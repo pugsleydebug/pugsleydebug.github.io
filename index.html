@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="siteTitle">About Me | GitHub</title>
+    <title id="siteTitle">About Me | pugsley</title>
     <style>
         :root {
             --bg: #0d1117;
@@ -27,7 +27,7 @@
             box-sizing: border-box;
         }
         
-        /* Rain Container */
+        /* Rain Container & Active Fall Animation */
         .rain {
             position: fixed;
             top: 0;
@@ -43,12 +43,13 @@
             width: 1px;
             height: 20px;
             position: absolute;
-            bottom: 100%;
+            top: -20px;
             animation: fall linear infinite;
         }
         
         @keyframes fall {
-            to { margin-top: 100vh; }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(105vh); }
         }
 
         /* Main GitHub Box */
@@ -80,24 +81,20 @@
             font-weight: 400;
         }
         
-        /* Version Badge */
+        /* Integrated Version Badge */
         .version-badge {
+            display: inline-block;
             background-color: rgba(56, 139, 253, 0.1);
-            color: var(--link);
+            color: #58a6ff;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
-            position: relative;
-            z-index: 10;
+            cursor: default;
+            border: 1px solid #30363d;
+            transition: all 0.5s ease; 
         }
-        .version-badge:hover {
-            transform: scale(1.05);
-            background-color: rgba(56, 139, 253, 0.2);
-        }
+        
         .readme-box {
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -115,8 +112,8 @@
             line-height: 1.6;
         }
         h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 0;}
-        ul { padding-left: 20px; }
-        li { margin-bottom: 8px; }
+        ul { padding-left: 20px; margin: 0; }
+        li { margin-bottom: 8px; list-style-type: disc; }
 
         /* Full Screen Confession Layout */
         .confession-screen {
@@ -137,11 +134,10 @@
             text-align: center;
         }
         
-        /* Small Typography Settings */
+        /* Confession Header Default Reset */
         .confession-content h1 {
             font-size: 1.8rem; 
             margin-bottom: 25px;
-            color: #ec6cb9; 
             font-weight: 600;
         }
         .confession-content p {
@@ -149,6 +145,7 @@
             font-size: 1.05rem; 
             line-height: 1.7;
             margin: 16px 0;
+            min-height: 24px;
         }
 
         /* Blinking Typewriter Cursor */
@@ -167,66 +164,25 @@
 </head>
 <body>
     
+    <!-- Background Rain Environment -->
     <div class="rain" id="rainContainer"></div>
 
+    <!-- MAIN PROFILE INTERFACE -->
     <div class="wrapper" id="mainProfile">
         <div class="header">
             <div class="repo-title">
                 <span>pugsley /</span> about-me
             </div>
-            <!DOCTYPE html>
-<html>
-<head>
-    <style>
-      
-        .version-badge {
-            display: inline-block;
-            background-color: rgba(56, 139, 253, 0.1);
-            color: #58a6ff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            cursor: default;
-            border: 1px solid #30363d;
-            /* Smooth 0.5-second transition for the fade out */
-            transition: all 0.5s ease; 
-        }
-    </style>
-</head>
-<body style="background-color: #0d1117; padding: 40px; text-align: center;">
-
-    <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
-        Latest release: v1.0.0
-    </div>
-
-    <script>
-        function trollBadge(element) {
-            // Check ensures the timer doesn't restart if they hover over it multiple times
-            if (element.innerText !== "not here lmao") {
-                
-                // Change text and colors instantly to indicate a troll trap
-                element.innerText = "Not here lmao";
-                element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
-                element.style.color = "#f85149"; 
-                element.style.borderColor = "#f85149";
-                
-                // Wait 5 seconds (5000 milliseconds)
-                setTimeout(() => {
-                   
-                }, 5000);
-            }
-        }
-    </script>
-
-</body>
-</html>
+            
+            <!-- Dynamic Version Badge Dropdown -->
+            <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
+                Latest release: v2.0
+            </div>
         </div>
 
         <div class="readme-box">
             <div class="readme-header">
-                📖 README.md
+                README.md
             </div>
             <div class="readme-content">
                 <h2>Hi there, I'm pugsley 👋</h2>
@@ -234,19 +190,20 @@
                 
                 <h3>🚀 About Me</h3>
                 <ul>
-                    <p>📚 Currently focusing on my studies / career goals</li>
-                    <p>🎧 Huge fan of music, current favorites include everything</li>
-                    <p>☕ Can be easily bribed with iced coffee or good food</li>
-                    <p>⚡ Fun fact: I might have left a secret somewhere on this page..<span onclick="revealSecret()" style="cursor: default; color: var(--text);">.</span></li>
+                    <li>Currently focusing on my studies / career goals</li>
+                    <li>Huge fan of music, current favorites include everything</li>
+                    <li>Can be easily bribed with iced coffee or good food</li>
+                    <li>Fun fact: I might have left a secret somewhere on this page..<span onclick="revealSecret()" style="cursor: pointer; color: var(--text); user-select: none;">.</span></li>
                 </ul>
 
                 <h3>🛠️ Tech & Hobbies</h3>
                 <p>HTML, CSS, overthinking, and making websites instead of texting my feelings directly.</p>
-                <p> learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it) <p>
+                <p style="font-size: 13px; color: var(--muted);">Learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it)</p>
             </div>
         </div>
     </div>
 
+    <!-- MAIN TYPING OVERLAY SCREEN -->
     <div class="confession-screen" id="secretScreen">
         <div class="confession-content">
             <h1 id="typeH1"></h1>
@@ -259,7 +216,7 @@
     </div>
 
     <script>
-        // Generate Raindrops
+        // Smooth Random Rainfall System
         const rainContainer = document.getElementById('rainContainer');
         const dropCount = 100;
 
@@ -267,31 +224,47 @@
             const drop = document.createElement('div');
             drop.classList.add('drop');
             drop.style.left = Math.random() * 100 + 'vw';
-            drop.style.animationDuration = Math.random() * 0.5 + 0.5 + 's'; 
-            drop.style.animationDelay = Math.random() * 1 + 's';
+            drop.style.animationDuration = Math.random() * 0.5 + 0.8 + 's'; 
+            drop.style.animationDelay = Math.random() * 2 + 's';
             rainContainer.appendChild(drop);
         }
 
-        // Configuration with your custom letter
+        // Configuration Text Sequence - pugsley modified with neon purple styling
         const lines = [
-            { id: "typeH1", text: "Dear Ren." },
+            { id: "typeH1", text: "<span style='color: #ffffff;'>Dear</span> <span style='color: #ff3333; text-shadow: 0 0 8px #ff3333;'>Ren</span>." },
             { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
             { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
             { id: "typeP3", text: "Thank you for being the calm in my storm." },
             { id: "typeP4", text: "Yes, I truly, love you too. Even though I dont act like it, just know I do." },
-            { id: "typeP5", text: "Always, pugsley" }
+            { id: "typeP5", text: "love you too, <span style='color: #d600ff; text-shadow: 0 0 8px #d600ff; font-weight: bold;'>pugsley</span>" }
         ];
 
         const speed = 25; 
 
-        function revealSecret() 
-{
+        // Version Badge Action Handler
+        function trollBadge(element) {
+            if (element.innerText !== "not here lmao") {
+                element.innerText = "not here lmao";
+                element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
+                element.style.color = "#f85149"; 
+                element.style.borderColor = "#f85149";
+                
+                setTimeout(() => {
+                    element.style.opacity = "0";
+                    setTimeout(() => { element.style.display = "none"; }, 500);
+                }, 5000);
+            }
+        }
+
+        // Trigger Secret Scene transition
+        function revealSecret() {
             document.getElementById('mainProfile').style.display = 'none';
             document.title = "for ren";
             document.getElementById('secretScreen').style.display = 'flex';
             typeLine(0);
         }
 
+        // Upgraded HTML-Safe Injection Typewriter Engine
         function typeLine(lineIndex) {
             if (lineIndex >= lines.length) return; 
 
@@ -300,35 +273,33 @@
             let text = currentLine.text;
             let charIndex = 0;
 
-            const cursor = document.createElement('span');
-            cursor.classList.add('cursor');
-            element.appendChild(cursor);
-
+            // Simple loop parsing text elements vs HTML tags safely
             function nextChar() {
                 if (charIndex < text.length) {
-                    // Perfect highlight match for "love you"
-                    if (text.substring(charIndex).startsWith("love you")) {
-                        const span = document.createElement('span');
-                        span.style.color = '#ec6cb9';
-                        span.style.fontWeight = 'bold';
-                        span.innerText = "love you";
-                        element.insertBefore(span, cursor);
-                        charIndex += 8; 
-                    } else {
-                        const textNode = document.createTextNode(text[charIndex]);
-                        element.insertBefore(textNode, cursor);
-                        charIndex++;
+                    // If encountering a tag window, bypass parsing its individual letters
+                    if (text[charIndex] === '<') {
+                        let tagCloseIndex = text.indexOf('>', charIndex);
+                        if (tagCloseIndex !== -1) {
+                            charIndex = tagCloseIndex + 1;
+                        }
                     }
+                    
+                    // Format customized "love you" selections smoothly
+                    let parsedText = text.substring(0, charIndex);
+                    parsedText = parsedText.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    
+                    element.innerHTML = parsedText + '<span class="cursor"></span>';
+                    charIndex++;
                     setTimeout(nextChar, speed);
                 } else {
-                    cursor.remove();
+                    // Strip active cursor asset from completed lines safely
+                    let finalParsed = text.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    element.innerHTML = finalParsed;
                     typeLine(lineIndex + 1);
                 }
             }
             nextChar();
-
         }
     </script>
-
 </body>
 </html>
