@@ -148,6 +148,17 @@
             min-height: 24px;
         }
 
+        /* Delayed Message Box */
+        .follow-up-msg {
+            margin-top: 35px;
+            font-size: 0.95rem;
+            color: #ff4d4d;
+            text-shadow: 0 0 6px rgba(255, 77, 77, 0.4);
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
         /* Blinking Typewriter Cursor */
         .cursor {
             display: inline-block;
@@ -164,17 +175,14 @@
 </head>
 <body>
     
-    <!-- Background Rain Environment -->
     <div class="rain" id="rainContainer"></div>
 
-    <!-- MAIN PROFILE INTERFACE -->
     <div class="wrapper" id="mainProfile">
         <div class="header">
             <div class="repo-title">
                 <span>pugsley /</span> about-me
             </div>
             
-            <!-- Dynamic Version Badge Dropdown -->
             <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
                 Release v2.0
             </div>
@@ -199,12 +207,11 @@
                 <h3>🛠️ Tech & Hobbies</h3>
                 <p>HTML, CSS, overthinking, and making websites instead of texting my feelings directly.</p>
                 <p style="font-size: 13px; color: var(--muted);">Learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it)</p>
-                <p>I also develop on Roblox Studio :P <p>
+                <p>I also develop on Roblox Studio :P </p>
             </div>
         </div>
     </div>
 
-    <!-- MAIN TYPING OVERLAY SCREEN -->
     <div class="confession-screen" id="secretScreen">
         <div class="confession-content">
             <h1 id="typeH1"></h1>
@@ -213,6 +220,7 @@
             <p id="typeP3"></p>
             <p id="typeP4"></p>
             <p id="typeP5"></p>
+            <div id="delayedMsg" class="follow-up-msg">please reply often, yk i'm worried about you</div>
         </div>
     </div>
 
@@ -236,7 +244,7 @@
             { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
             { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
             { id: "typeP3", text: "Thank you for being the calm in my storm." },
-            { id: "typeP4", text: "Yes, I truly, love you too. <3" },
+            { id: "typeP4", text: "Yes, I truly, love you too." },
             { id: "typeP5", text: "love you aswell :D, <span style='color: #d600ff; text-shadow: 0 0 8px #d600ff; font-weight: bold;'>pugsley</span>" }
         ];
 
@@ -267,7 +275,13 @@
 
         // Upgraded HTML-Safe Injection Typewriter Engine
         function typeLine(lineIndex) {
-            if (lineIndex >= lines.length) return; 
+            if (lineIndex >= lines.length) {
+                // Triggers exactly 2 seconds after the last line finishes typing
+                setTimeout(() => {
+                    document.getElementById('delayedMsg').style.opacity = "1";
+                }, 2000);
+                return; 
+            }
 
             const currentLine = lines[lineIndex];
             const element = document.getElementById(currentLine.id);
