@@ -76,9 +76,15 @@
             font-size: 20px;
             font-weight: 600;
         }
-        .repo-title span {
+        
+        /* Styled the redirect link to blend in naturally */
+        .repo-redirect-link {
             color: var(--link);
+            text-decoration: none;
             font-weight: 400;
+        }
+        .repo-redirect-link:hover {
+            text-decoration: underline;
         }
         
         /* Integrated Version Badge */
@@ -180,7 +186,7 @@
     <div class="wrapper" id="mainProfile">
         <div class="header">
             <div class="repo-title">
-                <span>pugsley /</span> about-me
+                <a href="https://www.tiktok.com/@jakeisnthereanymore" class="repo-redirect-link">pugsley</a> / about-me
             </div>
             
             <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
