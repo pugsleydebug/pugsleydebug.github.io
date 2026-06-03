@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="siteTitle">About Me | pugsley</title>
+    <title id="siteTitle">About Me | GitHub</title>
     <style>
         :root {
             --bg: #0d1117;
@@ -176,7 +176,7 @@
             
             <!-- Dynamic Version Badge Dropdown -->
             <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
-                Latest release: v2.0
+                Latest release: v1.0.0
             </div>
         </div>
 
@@ -185,7 +185,7 @@
                 README.md
             </div>
             <div class="readme-content">
-                <h2>Hi there, I'm pugsley 👋</h2>
+                <h2>Hi there, I'm pugsley</h2>
                 <p>Welcome to my official About Me page. Here is a little bit about who I am and what I like to do.</p>
                 
                 <h3>🚀 About Me</h3>
@@ -193,7 +193,8 @@
                     <li>Currently focusing on my studies / career goals</li>
                     <li>Huge fan of music, current favorites include everything</li>
                     <li>Can be easily bribed with iced coffee or good food</li>
-                    <li>Fun fact: I might have left a secret somewhere on this page..<span onclick="revealSecret()" style="cursor: pointer; color: var(--text); user-select: none;">.</span></li>
+                    <!-- HIDE THE CLICKABLE DOT VISUALLY -->
+                    <li>Fun fact: I might have left a secret somewhere on this page..<span onclick="revealSecret()" style="cursor: default; color: var(--text); user-select: none;">.</span></li>
                 </ul>
 
                 <h3>🛠️ Tech & Hobbies</h3>
@@ -229,7 +230,7 @@
             rainContainer.appendChild(drop);
         }
 
-        // Configuration Text Sequence - pugsley modified with neon purple styling
+        // Configuration Text Sequence
         const lines = [
             { id: "typeH1", text: "<span style='color: #ffffff;'>Dear</span> <span style='color: #ff3333; text-shadow: 0 0 8px #ff3333;'>Ren</span>." },
             { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
