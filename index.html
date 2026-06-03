@@ -27,14 +27,14 @@
             box-sizing: border-box;
         }
         
-        /* Rain Container & Active Fall Animation */
+        /* Rain Container - Moved z-index to the absolute top layer */
         .rain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; 
+            z-index: 99999; 
             pointer-events: none;
         }
         
@@ -176,13 +176,13 @@
             
             <!-- Dynamic Version Badge Dropdown -->
             <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
-                Latest release: v2.0
+                Release v2.0
             </div>
         </div>
 
         <div class="readme-box">
             <div class="readme-header">
-                README.md
+               README.md
             </div>
             <div class="readme-content">
                 <h2>Hi there, I'm pugsley</h2>
@@ -193,13 +193,13 @@
                     <li>Currently focusing on my studies / career goals</li>
                     <li>Huge fan of music, current favorites include everything</li>
                     <li>Can be easily bribed with iced coffee or good food</li>
-                    <!-- HIDE THE CLICKABLE DOT VISUALLY -->
                     <li>Fun fact: I might have left a secret somewhere on this page..<span onclick="revealSecret()" style="cursor: default; color: var(--text); user-select: none;">.</span></li>
                 </ul>
 
                 <h3>🛠️ Tech & Hobbies</h3>
                 <p>HTML, CSS, overthinking, and making websites instead of texting my feelings directly.</p>
                 <p style="font-size: 13px; color: var(--muted);">Learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it)</p>
+                <p>I also develop on Roblox Studio :P <p>
             </div>
         </div>
     </div>
