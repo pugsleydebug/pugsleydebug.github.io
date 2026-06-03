@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="siteTitle">About Me | pugsley</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --box-bg: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --link: #58a6ff;
+            --muted: #8b949e;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+            min-height: 100vh;
+            box-sizing: border-box;
+            /* Disable user selection to hinder text target inspection */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        /* Rain Container */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999; 
+            pointer-events: none;
+        }
+        
+        .drop {
+            background: rgba(255, 255, 255, 0.1);
+            width: 1px;
+            height: 20px;
+            position: absolute;
+            top: -20px;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(105vh); }
+        }
+
+        /* Main GitHub Box */
+        .wrapper {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 850px;
+            background: var(--box-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+        .repo-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .repo-redirect-link {
+            color: var(--link);
+            text-decoration: none;
+            font-weight: 400;
+        }
+        .repo-redirect-link:hover {
+            text-decoration: underline;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background-color: rgba(56, 139, 253, 0.1);
+            color: #58a6ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: default;
+            border: 1px solid #30363d;
+            transition: all 0.5s ease; 
+        }
+        
+        .readme-box {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .readme-header {
+            background: var(--bg);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .readme-content {
+            padding: 24px;
+            line-height: 1.6;
+        }
+        h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 0;}
+        ul { padding-left: 20px; margin: 0; }
+        li { margin-bottom: 8px; list-style-type: disc; }
+
+        /* Full Screen Confession Layout */
+        .confession-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000; 
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .confession-content {
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .confession-content h1 {
+            font-size: 1.8rem; 
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .confession-content p {
+            color: #c9d1d9;
+            font-size: 1.05rem; 
+            line-height: 1.7;
+            margin: 16px 0;
+            min-height: 24px;
+        }
+
+        /* Delayed Message Layout */
+        .follow-up-msg {
+            margin-top: 35px;
+            font-size: 0.95rem;
+            color: #ff4d4d;
+            text-shadow: 0 0 6px rgba(255, 77, 77, 0.4);
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* Blinking Typewriter Cursor */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: #ec6cb9;
+            margin-left: 4px;
+            animation: blink 0.6s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="rain" id="rainContainer"></div>
+
+    <div class="wrapper" id="mainProfile">
+        <div class="header">
+            <div class="repo-title">
+                <a href="YOUR_LINK_HERE" class="repo-redirect-link">pugsley</a> / about-me
+            </div>
+            
+            <div class="version-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
+                Release v2.0
+            </div>
+        </div>
+
+        <div class="readme-box">
+            <div class="readme-header">
+               README.md
+            </div>
+            <div class="readme-content">
+                <h2>Hi there, I'm pugsley</h2>
+                <p>Welcome to my official About Me page. Here is a little bit about who I am and what I like to do.</p>
+                
+                <h3>🚀 About Me</h3>
+                <ul>
+                    <li>Currently focusing on my studies / career goals</li>
+                    <li>Huge fan of music, current favorites include everything</li>
+                    <li>Can be easily bribed with iced coffee or good food</li>
+                    <li>Fun fact: I might have left a secret somewhere on this page...</li>
+                </ul>
+
+                <h3>🛠️ Tech & Hobbies</h3>
+                <p>HTML, CSS, overthinking, and making websites instead of texting my feelings directly.</p>
+                <p style="font-size: 13px; color: var(--muted);">Learned html js for this (hint about 4th thing here you need to click something very well hidden to activate it)</p>
+                
+                <p>I also develop on Roblox Studio :P <span onclick="revealSecret()" style="cursor: default; color: transparent; user-select: none; padding-right: 35px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="confession-screen" id="secretScreen">
+        <div class="confession-content">
+            <h1 id="typeH1"></h1>
+            <p id="typeP1"></p>
+            <p id="typeP2"></p>
+            <p id="typeP3"></p>
+            <p id="typeP4"></p>
+            <p id="typeP5"></p>
+            <div id="delayedMsg" class="follow-up-msg">please reply often, yk i'm worried about you</div>
+        </div>
+    </div>
+
+    <script>
+        // --- DEVTOOLS / INSPECT ELEMENT OBSTRUCTIONS ---
+        
+        // 1. Disable Right Click context menu
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // 2. Disable inspection shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) { 
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { 
+                return false;
+            }
+        };
+
+        // 3. Aggressive Console Clear & Anti-Debugging Engine
+        // Clears any incoming logging entries every 10ms and drops developer freezes
+        setInterval(function() {
+            console.clear();
+            
+            function amIDebugging(i) {
+                if (("" + i / i).length !== 1 || i % 20 === 0) {
+                    (function() {}.constructor("debugger")());
+                } else {
+                    (function() {}.constructor("debugger")());
+                }
+                amIDebugging(++i);
+            }
+            try { amIDebugging(0); } catch (e) {}
+        }, 10);
+
+
+        // --- SITE REACTION LOOPS ---
+
+        // Smooth Random Rainfall System
+        const rainContainer = document.getElementById('rainContainer');
+        const dropCount = 100;
+
+        for (let i = 0; i < dropCount; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = Math.random() * 0.5 + 0.8 + 's'; 
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+
+        // Configuration Text Sequence
+        const lines = [
+            { id: "typeH1", text: "<span style='color: #ffffff;'>Dear</span> <span style='color: #ff3333; text-shadow: 0 0 8px #ff3333;'>Ren</span>." },
+            { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
+            { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
+            { id: "typeP3", text: "Thank you for being the calm in my storm." },
+            { id: "typeP4", text: "Yes, I truly, love you too." },
+            { id: "typeP5", text: "love you aswell :D, <span style='color: #d600ff; text-shadow: 0 0 8px #d600ff; font-weight: bold;'>pugsley</span>" }
+        ];
+
+        const speed = 25; 
+
+        // Version Badge Action Handler
+        function trollBadge(element) {
+            if (element.innerText !== "not here lmao") {
+                element.innerText = "not here lmao";
+                element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
+                element.style.color = "#f85149"; 
+                element.style.borderColor = "#f85149";
+                
+                setTimeout(() => {
+                    element.style.opacity = "0";
+                    setTimeout(() => { element.style.display = "none"; }, 500);
+                }, 5000);
+            }
+        }
+
+        // Trigger Secret Scene transition
+        function revealSecret() {
+            document.getElementById('mainProfile').style.display = 'none';
+            document.title = "for ren";
+            document.getElementById('secretScreen').style.display = 'flex';
+            typeLine(0);
+        }
+
+        // Typewriter Engine
+        function typeLine(lineIndex) {
+            if (lineIndex >= lines.length) {
+                setTimeout(() => {
+                    document.getElementById('delayedMsg').style.opacity = "1";
+                }, 2000);
+                return; 
+            }
+
+            const currentLine = lines[lineIndex];
+            const element = document.getElementById(currentLine.id);
+            let text = currentLine.text;
+            let charIndex = 0;
+
+            function nextChar() {
+                if (charIndex < text.length) {
+                    if (text[charIndex] === '<') {
+                        let tagCloseIndex = text.indexOf('>', charIndex);
+                        if (tagCloseIndex !== -1) {
+                            charIndex = tagCloseIndex + 1;
+                        }
+                    }
+                    
+                    let parsedText = text.substring(0, charIndex);
+                    parsedText = parsedText.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    
+                    element.innerHTML = parsedText + '<span class="cursor"></span>';
+                    charIndex++;
+                    setTimeout(nextChar, speed);
+                } else {
+                    let finalParsed = text.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
+                    element.innerHTML = finalParsed;
+                    typeLine(lineIndex + 1);
+                }
+            }
+            nextChar();
+        }
+    </script>
+</body>
+</html>
