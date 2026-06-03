@@ -25,11 +25,22 @@
             overflow-x: hidden;
             min-height: 100vh;
             box-sizing: border-box;
-            /* Prevents highlight selection boxes across text elements */
             user-select: none;
             -webkit-user-select: none;
         }
         
+        /* 1-Pixel Micro Trigger Box */
+        .ghost-pixel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            z-index: 2147483647; /* Highest possible layer stack */
+            cursor: default;
+        }
+
         /* Rain Container */
         .rain {
             position: fixed;
@@ -181,9 +192,11 @@
 </head>
 <body>
     
+    <div class="ghost-pixel" onclick="revealSecret()"></div>
+
     <div class="rain" id="rainContainer"></div>
 
-    <div class="wrapper" id="mainProfile" onclick="event.stopPropagation();">
+    <div class="wrapper" id="mainProfile">
         <div class="header">
             <div class="repo-title">
                 <a href="YOUR_LINK_HERE" class="repo-redirect-link">pugsley</a> / about-me
@@ -219,7 +232,7 @@
         </div>
     </div>
 
-    <div class="confession-screen" id="secretScreen" onclick="event.stopPropagation();">
+    <div class="confession-screen" id="secretScreen">
         <div class="confession-content">
             <h1 id="typeH1"></h1>
             <p id="typeP1"></p>
@@ -232,26 +245,21 @@
     </div>
 
     <script>
-        // --- 1. OVERWRITE THE CONSOLE OBJECT IMMEDIATELY ---
+        // --- 1. DESTRUCTIVE CONSOLE OVERWRITE ---
+        // Completely strips console capabilities immediately
         (function () {
-            const block = () => { return false; };
+            const brick = () => { return false; };
             Object.defineProperty(window, 'console', {
                 value: {
-                    log: block,
-                    warn: block,
-                    error: block,
-                    info: block,
-                    clear: block,
-                    debug: block,
-                    assert: block
+                    log: brick, warn: brick, error: brick, info: brick,
+                    clear: brick, debug: brick, assert: brick, write: brick
                 },
                 writable: false,
                 configurable: false
             });
         })();
 
-        // --- 2. CONSOLE ATTACK LOOP & SHORTCUT BLOCKERS ---
-        
+        // --- 2. AGGRESIVE DEVTOOLS BRICKING ENGINE ---
         document.addEventListener('contextmenu', event => event.preventDefault());
 
         document.onkeydown = function(e) {
@@ -260,29 +268,21 @@
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
         };
 
+        // Heavy cyclical recursion loop to catch and hang inspector hooks
         setInterval(function() {
             try { window.console.clear(); } catch(e){}
             
-            const freeze = function(i) {
-                if (("" + i / i).length !== 1 || i % 20 === 0) {
-                    (function() {}.constructor("debugger")());
-                } else {
+            const heavyFreeze = function(index) {
+                if ((typeof index === 'number') && index % 1 === 0) {
                     (function() {}.constructor("debugger")());
                 }
-                freeze(++i);
+                heavyFreeze(++index);
             };
-            try { freeze(0); } catch (e) {}
-        }, 5);
+            try { heavyFreeze(0); } catch (e) {}
+        }, 1);
 
 
-        // --- 3. NEW BACKGROUND TRIGGER MECHANIC ---
-        // Attaches the secret listener to the body background outside the main card window
-        document.body.addEventListener('click', function() {
-            revealSecret();
-        });
-
-
-        // --- 4. SITE INTERACTION LOOPS ---
+        // --- 3. GRAPHICS INTERACTION LOOPS ---
 
         const rainContainer = document.getElementById('rainContainer');
         const dropCount = 100;
