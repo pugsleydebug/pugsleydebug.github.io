@@ -128,7 +128,7 @@
             border-radius: 6px;
             border: 1px solid rgba(88, 166, 255, 0.2);
             transition: all 0.4s ease;
-            cursor: default;
+            cursor: pointer;
         }
 
         /* Core Typography Content Layout */
@@ -253,6 +253,119 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
+
+        /* Interface Elements */
+        .crack-container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .crack-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            letter-spacing: -1px;
+            color: #f85149;
+            text-shadow: 0 0 15px rgba(248, 81, 73, 0.4);
+            margin-bottom: 40px;
+        }
+
+        .action-button-group {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-height: 80px;
+        }
+
+        .btn-ui {
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            font-size: 1.2rem;
+            padding: 12px 36px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s, opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
+            user-select: none;
+        }
+
+        .btn-yes {
+            background-color: transparent;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+        }
+
+        .btn-yes:hover {
+            background-color: rgba(57, 255, 20, 0.1);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background-color: transparent;
+            color: #f85149;
+            border: 2px solid #f85149;
+            box-shadow: 0 0 10px rgba(248, 81, 73, 0.2);
+        }
+
+        /* Really Screen Styling */
+        .really-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            font-family: ui-monospace, monospace;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Fullscreen GIF Explosion Canvas */
+        #gifSpamViewport {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            display: none;
+            z-index: 99999999;
+            overflow: hidden;
+        }
+
+        .spam-gif {
+            position: absolute;
+            width: 120px; /* Size of the spawned GIFs */
+            height: auto;
+            transform: translate(-50%, -50%);
+            animation: popIn 0.15s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Persistent Reset Banner */
+        .reset-overlay-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100000000;
+            background: rgba(3, 4, 7, 0.9);
+            padding: 20px 40px;
+            border-radius: 8px;
+            border: 1px solid #ff6b6b;
+            font-family: ui-monospace, monospace;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+            text-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
+            pointer-events: none;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -265,7 +378,7 @@
                 <a href="https://linktr.ee/pugsley.tech" target="_blank">pugsley</a> / root
             </div>
             <div class="system-badge" onmouseenter="trollBadge(this)" onclick="trollBadge(this)">
-                SYS_VER_2.0
+                Release 6.9
             </div>
         </div>
 
@@ -285,7 +398,7 @@
         </div>
     </div>
 
-    <!-- Confession Viewport (With New Interactive Exit Option Attached) -->
+    <!-- Screen 1: Original Confession Viewport -->
     <div class="confession-viewport" id="secretScreen">
         <div class="confession-terminal">
             <h1 id="typeH1"></h1>
@@ -295,11 +408,11 @@
             <p id="typeP4"></p>
             <p id="typeP5"></p>
             <div id="delayedMsg" class="system-warning">> please reply often, yk i get worried about you</div>
-            <!-- Added matching layout exit trigger style -->
             <div id="confessionCloseMsg" class="system-warning" style="color: var(--text-secondary); cursor: pointer; margin-top: 15px;" onclick="location.reload()">> click here to clear session data and reset</div>
         </div>
     </div>
 
+    <!-- Screen 2: Type Preference Viewport -->
     <div class="confession-viewport" id="typeMatrixScreen">
         <div class="confession-terminal">
             <h1 style="color: #ffffff;"><span style="color: var(--accent-green);">//</span> MY_TYPE_PREFERENCE</h1>
@@ -310,6 +423,33 @@
             <p id="matrixP5"></p>
             <div id="matrixCloseMsg" class="system-warning" style="color: var(--text-secondary); cursor: pointer;" onclick="location.reload()">> click here to clear session data and reset</div>
         </div>
+    </div>
+
+    <!-- Screen 3: System Badge Trigger Screen -->
+    <div class="confession-viewport" id="crackScreen">
+        <div class="crack-container">
+            <div class="crack-title">wanna crack?</div>
+            <div class="action-button-group">
+                <button class="btn-ui btn-yes" onclick="handleCrackYes()">Yes</button>
+                <button class="btn-ui btn-no" id="runawayNo">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Ultimatum Matrix Viewport -->
+    <div class="confession-viewport" id="reallyScreen">
+        <div class="crack-container">
+            <div class="really-title">really?</div>
+            <div class="action-button-group">
+                <button class="btn-ui btn-yes" onclick="triggerGifExplosion()">Yes</button>
+                <button class="btn-ui btn-no" id="reallyNo" onclick="vaporizeNoButton()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Fullscreen Spammed Elements Grid -->
+    <div id="gifSpamViewport">
+        <div class="reset-overlay-msg">> refresh to reset</div>
     </div>
 
     <script>
@@ -335,7 +475,7 @@
             if (e.ctrlKey && e.keyCode == 85) return false; 
         };
 
-        // --- 2. ANTI-DEVTOOLS LOOP (FORCED TRAP & 0.5s WIPE) ---
+        // --- 2. ANTI-DEVTOOLS LOOP ---
         setInterval(function() {
             try { console.clear(); } catch(e){}
         }, 500);
@@ -373,9 +513,8 @@
             { id: "typeP5", text: "love you aswell :D, <span style='color: #00ff66; text-shadow: 0 0 8px #00ff66; font-weight: bold;'>pugsley</span>" }
         ];
 
-        // Type List configuration array items
         const matrixLines = [
-            { id: "matrixP1", text: "<span style='color: var(--accent-green);'>[01] Personality:</span> Purely genuine, gentle, and understands my chaotic energy without judgment." },
+            { id: "matrixP1", text: "<span style='color: var(--accent-green);'>[01] Personality:</span> Purely genuine, gentle, and understands my chaotic energy without judgement." },
             { id: "matrixP2", text: "<span style='color: var(--accent-green);'>[02] Communication:</span> Someone who updates and checks in often so I don't have to worry." },
             { id: "matrixP3", text: "<span style='color: var(--accent-green);'>[03] Presence:</span> Feels like a safe space, bringing absolute calm when life gets too noisy." },
             { id: "matrixP4", text: "<span style='color: var(--accent-green);'>[04] Shared Energy:</span> Appreciates fine arts or music, matched with a deeply affectionate heart." },
@@ -385,29 +524,25 @@
         const speed = 30; 
 
         function trollBadge(element) {
-            if (element.innerText !== "NOT_HERE_LMAO") {
-                element.innerText = "NOT_HERE_LMAO";
-                element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
-                element.style.color = "#f85149"; 
-                element.style.borderColor = "#f85149";
-                
-                setTimeout(() => {
-                    element.style.opacity = "0";
-                    setTimeout(() => { element.style.display = "none"; }, 500);
-                }, 4000);
-            }
+            element.innerText = "wanna crack?";
+            element.style.backgroundColor = "rgba(248, 81, 73, 0.1)"; 
+            element.style.color = "#f85149"; 
+            element.style.borderColor = "#f85149";
+            
+            setTimeout(() => {
+                document.getElementById('mainProfile').style.display = 'none';
+                document.title = "// payload: initialization";
+                document.getElementById('crackScreen').style.display = 'flex';
+            }, 300);
         }
 
-        // Trigger Menu 1: Original Confession Sequence
         function revealSecret() {
             document.getElementById('mainProfile').style.display = 'none';
             document.title = "// communication: connected";
             document.getElementById('secretScreen').style.display = 'flex';
-            // Adjusted passing argument to sequence both lines sequentially before handling double footer fade-in
             typeEngine(lines, 0, ['delayedMsg', 'confessionCloseMsg']);
         }
 
-        // Trigger Menu 2: New Ideal Type Sequence
         function revealTypeMenu() {
             document.getElementById('mainProfile').style.display = 'none';
             document.title = "// matrix: processing_parameters";
@@ -454,6 +589,94 @@
                 }
             }
             nextChar();
+        }
+
+        // --- 6. RUNAWAY EVASIVE BUTTON ALGORITHM ---
+        const noBtn = document.getElementById('runawayNo');
+
+        document.addEventListener('mousemove', function(e) {
+            if (document.getElementById('crackScreen').style.display !== 'flex') return;
+
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
+
+            const distanceX = e.clientX - btnCenterX;
+            const distanceY = e.clientY - btnCenterY;
+            const totalDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            const dangerRadius = 80;
+
+            if (totalDistance < dangerRadius) {
+                const pad = 30;
+                const minX = pad;
+                const maxX = window.innerWidth - btnRect.width - pad;
+                const minY = pad;
+                const maxY = window.innerHeight - btnRect.height - pad;
+
+                let targetX = Math.random() * (maxX - minX) + minX;
+                let targetY = Math.random() * (maxY - minY) + minY;
+
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = targetX + 'px';
+                noBtn.style.top = targetY + 'px';
+            }
+        });
+
+        // --- 7. TRANSITION ENGINE ---
+        function handleCrackYes() {
+            document.getElementById('crackScreen').style.display = 'none';
+            document.title = "// system: critical_prompt";
+            document.getElementById('reallyScreen').style.display = 'flex';
+        }
+
+        function vaporizeNoButton() {
+            const reallyNoBtn = document.getElementById('reallyNo');
+            reallyNoBtn.style.pointerEvents = 'none'; 
+            reallyNoBtn.style.opacity = '0';
+            reallyNoBtn.style.transform = 'scale(0.3)';
+            
+            setTimeout(() => {
+                reallyNoBtn.remove();
+            }, 400);
+        }
+
+        // --- 8. GIF SPAM GENERATOR ENGINE ---
+        function triggerGifExplosion() {
+            document.getElementById('reallyScreen').style.display = 'none';
+            document.title = "A H H H H H H H H H H H";
+            
+            const spamContainer = document.getElementById('gifSpamViewport');
+            spamContainer.style.display = 'block';
+
+            // Function to generate a single random GIF element inside the container
+            function spawnGifInstance() {
+                const img = document.createElement('img');
+                img.src = "https://media.tenor.com/aiXpL9TPFVQAAAAi/ahh.gif";
+                img.classList.add('spam-gif');
+
+                // Determine completely randomized positioning points across the entire screen layout
+                const randomX = Math.random() * window.innerWidth;
+                const randomY = Math.random() * window.innerHeight;
+
+                img.style.left = randomX + 'px';
+                img.style.top = randomY + 'px';
+
+                // Random small variance in width size so they clip over each other naturally
+                const randomWidth = Math.floor(Math.random() * 60) + 100; // between 100px and 160px
+                img.style.width = randomWidth + 'px';
+
+                spamContainer.appendChild(img);
+            }
+
+            // High frequency generation interval loop (Generates 1 image instance every 40 milliseconds)
+            const spamInterval = setInterval(spawnGifInstance, 40);
+
+            // To protect performance framework from infinite loop crash down thresholds, 
+            // the loop caps compilation structural generation at 400 instances.
+            setTimeout(() => {
+                clearInterval(spamInterval);
+            }, 16000);
         }
     </script>
 </body>
