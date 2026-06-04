@@ -28,19 +28,20 @@
             user-select: none;
             -webkit-user-select: none;
         }
-        
-        /* 1-Pixel Micro Trigger Box */
-        .ghost-pixel {
+
+        /* 5px Centered Micro-Trigger Box outside the card */
+        .ghost-square {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 1px;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
             background: transparent;
-            z-index: 2147483647; /* Highest possible layer stack */
+            z-index: 999999;
             cursor: default;
         }
-
+        
         /* Rain Container */
         .rain {
             position: fixed;
@@ -77,6 +78,7 @@
             border-radius: 6px;
             padding: 24px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            margin-top: 15px;
         }
         .header {
             display: flex;
@@ -132,68 +134,12 @@
         h2 { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 0;}
         ul { padding-left: 20px; margin: 0; }
         li { margin-bottom: 8px; list-style-type: disc; }
-
-        /* Full Screen Confession Layout */
-        .confession-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000000; 
-            display: none; 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 9999;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .confession-content {
-            max-width: 600px;
-            text-align: center;
-        }
-        
-        .confession-content h1 {
-            font-size: 1.8rem; 
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-        .confession-content p {
-            color: #c9d1d9;
-            font-size: 1.05rem; 
-            line-height: 1.7;
-            margin: 16px 0;
-            min-height: 24px;
-        }
-
-        /* Delayed Message Layout */
-        .follow-up-msg {
-            margin-top: 35px;
-            font-size: 0.95rem;
-            color: #ff4d4d;
-            text-shadow: 0 0 6px rgba(255, 77, 77, 0.4);
-            font-style: italic;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        /* Blinking Typewriter Cursor */
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            background-color: #ec6cb9;
-            margin-left: 4px;
-            animation: blink 0.6s infinite alternate;
-        }
-        @keyframes blink {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
-        }
     </style>
 </head>
 <body>
-    
-    <div class="ghost-pixel" onclick="revealSecret()"></div>
 
+    <div class="ghost-square" onclick="revealSecret()"></div>
+    
     <div class="rain" id="rainContainer"></div>
 
     <div class="wrapper" id="mainProfile">
@@ -232,21 +178,8 @@
         </div>
     </div>
 
-    <div class="confession-screen" id="secretScreen">
-        <div class="confession-content">
-            <h1 id="typeH1"></h1>
-            <p id="typeP1"></p>
-            <p id="typeP2"></p>
-            <p id="typeP3"></p>
-            <p id="typeP4"></p>
-            <p id="typeP5"></p>
-            <div id="delayedMsg" class="follow-up-msg">please reply often, yk i'm worried about you</div>
-        </div>
-    </div>
-
     <script>
         // --- 1. DESTRUCTIVE CONSOLE OVERWRITE ---
-        // Completely strips console capabilities immediately
         (function () {
             const brick = () => { return false; };
             Object.defineProperty(window, 'console', {
@@ -259,7 +192,7 @@
             });
         })();
 
-        // --- 2. AGGRESIVE DEVTOOLS BRICKING ENGINE ---
+        // --- 2. ADVANCED CYCLICAL DEVTOOLS HANG ENGINE ---
         document.addEventListener('contextmenu', event => event.preventDefault());
 
         document.onkeydown = function(e) {
@@ -268,7 +201,6 @@
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
         };
 
-        // Heavy cyclical recursion loop to catch and hang inspector hooks
         setInterval(function() {
             try { window.console.clear(); } catch(e){}
             
@@ -282,8 +214,13 @@
         }, 1);
 
 
-        // --- 3. GRAPHICS INTERACTION LOOPS ---
+        // --- 3. REDIRECT FUNCTION ---
+        function revealSecret() {
+            // Change 'secret.html' to your full web URL if hosting on different sites
+            window.location.href = "secret.html"; 
+        }
 
+        // --- 4. SITE INTERACTION LOOPS ---
         const rainContainer = document.getElementById('rainContainer');
         const dropCount = 100;
 
@@ -295,17 +232,6 @@
             drop.style.animationDelay = Math.random() * 2 + 's';
             rainContainer.appendChild(drop);
         }
-
-        const lines = [
-            { id: "typeH1", text: "<span style='color: #ffffff;'>Dear</span> <span style='color: #ff3333; text-shadow: 0 0 8px #ff3333;'>Ren</span>." },
-            { id: "typeP1", text: "In the quiet corners of my chaotic world, your voice is a soft lullaby that puts my restless heart at ease." },
-            { id: "typeP2", text: "You've shown me a kind of gentle understanding I never knew existed, and my days are brighter simply because you're in them." },
-            { id: "typeP3", text: "Thank you for being the calm in my storm." },
-            { id: "typeP4", text: "Yes, I truly, love you too." },
-            { id: "typeP5", text: "love you aswell :D, <span style='color: #d600ff; text-shadow: 0 0 8px #d600ff; font-weight: bold;'>pugsley</span>" }
-        ];
-
-        const speed = 25; 
 
         function trollBadge(element) {
             if (element.innerText !== "not here lmao") {
@@ -319,50 +245,6 @@
                     setTimeout(() => { element.style.display = "none"; }, 500);
                 }, 5000);
             }
-        }
-
-        function revealSecret() {
-            document.getElementById('mainProfile').style.display = 'none';
-            document.title = "for ren";
-            document.getElementById('secretScreen').style.display = 'flex';
-            typeLine(0);
-        }
-
-        function typeLine(lineIndex) {
-            if (lineIndex >= lines.length) {
-                setTimeout(() => {
-                    document.getElementById('delayedMsg').style.opacity = "1";
-                }, 2000);
-                return; 
-            }
-
-            const currentLine = lines[lineIndex];
-            const element = document.getElementById(currentLine.id);
-            let text = currentLine.text;
-            let charIndex = 0;
-
-            function nextChar() {
-                if (charIndex < text.length) {
-                    if (text[charIndex] === '<') {
-                        let tagCloseIndex = text.indexOf('>', charIndex);
-                        if (tagCloseIndex !== -1) {
-                            charIndex = tagCloseIndex + 1;
-                        }
-                    }
-                    
-                    let parsedText = text.substring(0, charIndex);
-                    parsedText = parsedText.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
-                    
-                    element.innerHTML = parsedText + '<span class="cursor"></span>';
-                    charIndex++;
-                    setTimeout(nextChar, speed);
-                } else {
-                    let finalParsed = text.replace(/love you/g, "<span style='color: #ec6cb9; font-weight: bold;'>love you</span>");
-                    element.innerHTML = finalParsed;
-                    typeLine(lineIndex + 1);
-                }
-            }
-            nextChar();
         }
     </script>
 </body>
