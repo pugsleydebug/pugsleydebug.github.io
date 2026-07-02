@@ -2,115 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>pugsley|bio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Happy Birthday Ren</title>
     <style>
-        :root { --glass: rgba(255, 255, 255, 0.05); --neon-blue: #00d4ff; }
-        body { margin: 0; background: #050505; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; cursor: crosshair; }
+        :root { --pink: #ff71ce; }
+        body { margin: 0; background: #050505; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 
-        #overlay { position: fixed; inset: 0; background: #000; z-index: 999; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.5s; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 5px; font-weight: bold; text-shadow: 0 0 10px #fff; }
+        #overlay { position: fixed; inset: 0; background: #000; z-index: 999; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.5s; font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 5px; font-weight: bold; color: var(--pink); text-shadow: 0 0 15px var(--pink); }
 
-        .glass-card { background: var(--glass); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 40px; width: 350px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.2); }
-        .avatar { width: 120px; height: 120px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 40px; width: 400px; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.2); }
         
-        #typewriter { font-size: 0.9rem; color: var(--neon-blue); height: 1.5rem; margin-bottom: 25px; font-weight: 400; }
-
-        .controls-row { display: flex; align-items: center; gap: 15px; margin-top: 20px; }
-        .audio-player { background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border-radius: 20px; padding: 15px; display: flex; align-items: center; justify-content: space-between; flex-grow: 1; overflow: hidden; }
-        
-        /* Marquee Scrolling Text */
-        .marquee { width: 150px; overflow: hidden; white-space: nowrap; font-size: 0.85rem; font-weight: 600; }
-        .marquee-inner { display: inline-block; padding-left: 100%; animation: scroll 8s linear infinite; }
-        @keyframes scroll { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
-
-        .btn-style { background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; transition: all 0.3s ease; text-decoration: none; flex-shrink: 0; }
-        .btn-style.active { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
-        .btn-style:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
-
-        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); z-index: 1000; display: none; justify-content: center; align-items: center; }
-        .modal-container { position: relative; width: 400px; height: 500px; }
-        .modal-content { width: 100%; height: 100%; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .close-btn { position: absolute; top: -50px; right: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(5px); }
+        #text-display { font-size: 1rem; color: #eee; line-height: 1.6; min-height: 200px; white-space: pre-wrap; }
+        .cursor { border-right: 2px solid var(--pink); animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="overlay" onclick="start()">insert coin // click to start</div>
-
-    <div id="modal">
-        <div class="modal-container">
-            <button class="close-btn" onclick="document.getElementById('modal').style.display='none'"><i class="fa-solid fa-xmark"></i></button>
-            <div class="modal-content">
-                <iframe src="https://discord.dog/1486666866826018848" style="width:100%; height:100%; border:none;"></iframe>
-            </div>
-        </div>
-    </div>
+    <div id="overlay" onclick="start()">click to open your gift</div>
 
     <div class="glass-card">
-        <div style="position:relative; display:inline-block; margin-bottom:20px;">
-            <img id="pfp" class="avatar" src="">
-            <div id="status-dot" style="position:absolute; bottom:5px; right:5px; width:20px; height:20px; border-radius:50%; border:4px solid #050505; background:#747f8d;"></div>
-        </div>
-        <h2>pugsley</h2>
-        <div id="typewriter"></div>
-
-        <div class="controls-row">
-            <div class="audio-player">
-                <div class="marquee"><div class="marquee-inner">Sweet Boy - Malcolm Todd</div></div>
-                <button class="btn-style" id="btn" onclick="toggleAudio()"><i class="fa-solid fa-play"></i></button>
-            </div>
-            <button class="btn-style" onclick="document.getElementById('modal').style.display='flex'"><i class="fa-brands fa-discord"></i></button>
-        </div>
+        <div id="text-display"><span class="cursor"></span></div>
     </div>
 
-    <audio id="audio" loop><source src="https://files.catbox.moe/q7chrs.mp3" type="audio/mpeg"></audio>
+    <!-- Mechanical keyboard sound -->
+    <audio id="type-sound"><source src="https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3" type="audio/mpeg"></audio>
 
     <script>
-        const ID = "1486666866826018848";
-        const audio = document.getElementById('audio');
-        const btn = document.getElementById('btn');
-        const titles = ["software developer", "coder", "late night internet freak"];
-        
+        const fullText = `Happy Birthday Ren!
+
+You are the bright spot in my ordinary days and the person who makes every moment feel like a beautiful story. I am so lucky to celebrate you today.
+
+May your year ahead be filled with everything you dream of, and please always remember that you have a home in my heart.
+
+Happy birthday, my love. I’m so happy for you <3`;
+
+        const display = document.getElementById('text-display');
+        const sound = document.getElementById('type-sound');
+
         function start() {
             document.getElementById('overlay').style.opacity = '0';
             setTimeout(() => document.getElementById('overlay').style.display = 'none', 500);
-            audio.play();
-            btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-            btn.classList.add('active');
-            typeWriterEffect();
-            
-            fetch(`https://api.lanyard.rest/v1/users/${ID}`)
-                .then(res => res.json())
-                .then(data => {
-                    const d = data.data;
-                    document.getElementById('pfp').src = `https://cdn.discordapp.com/avatars/${ID}/${d.discord_user.avatar}.png`;
-                    const colors = { 'online': '#43b581', 'idle': '#faa61a', 'dnd': '#f04747', 'offline': '#747f8d' };
-                    document.getElementById('status-dot').style.background = colors[d.discord_status] || '#747f8d';
-                });
+            typeWriter(0);
         }
 
-        async function typeWriterEffect() {
-            while(true) {
-                for (let title of titles) {
-                    for (let char of title) {
-                        document.getElementById('typewriter').textContent += char;
-                        await new Promise(r => setTimeout(r, 80));
-                    }
-                    await new Promise(r => setTimeout(r, 2000));
-                    document.getElementById('typewriter').textContent = "";
-                }
-            }
-        }
+        async function typeWriter(i) {
+            if (i < fullText.length) {
+                // Update text
+                display.innerHTML = fullText.substring(0, i + 1) + '<span class="cursor"></span>';
+                
+                // Play sound
+                sound.currentTime = 0;
+                sound.play();
 
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                btn.classList.add('active');
-            } else {
-                audio.pause();
-                btn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                btn.classList.remove('active');
+                // Random typing speed for realism
+                let speed = Math.random() * 50 + 50; 
+                setTimeout(() => typeWriter(i + 1), speed);
             }
         }
     </script>
