@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pugsley | About Me</title>
+    <style>
+        :root {
+            --bg-color: #07090e;
+            --card-bg: rgba(22, 27, 34, 0.85);
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Rain Animation Background */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .drop {
+            position: absolute;
+            bottom: 100%;
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(transparent, rgba(88, 166, 255, 0.6));
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-60px);
+            }
+            100% {
+                transform: translateY(calc(100vh + 60px));
+            }
+        }
+
+        /* Stealthy Crescent Moon Easter Egg */
+        .crescent {
+            position: fixed;
+            top: 8%;
+            right: 8%;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            box-shadow: -8px 3px 0 0 rgba(88, 166, 255, 0.25);
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .crescent.visible {
+            opacity: 0.35;
+            pointer-events: auto;
+        }
+
+        .crescent:hover {
+            transform: scale(1.1);
+            opacity: 0.9;
+            box-shadow: -8px 3px 0 0 rgba(88, 166, 255, 0.8);
+        }
+
+        .readme-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        h1, h2 {
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            margin-top: 32px;
+        }
+
+        p {
+            margin: 12px 0;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .badge {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .badge:hover {
+            background-color: #30363d;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        /* Command Prompt Overlay */
+        #cmd-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 6, 10, 0.95);
+            z-index: 100;
+            flex-direction: column;
+            padding: 40px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .cmd-window {
+            flex: 1;
+            background-color: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .cmd-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #8b949e;
+        }
+
+        .cmd-output {
+            flex: 1;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #58a6ff;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .cmd-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        .cmd-prompt-symbol {
+            color: #3fb950;
+            font-weight: bold;
+        }
+
+        .cmd-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .cmd-close-btn {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .cmd-close-btn:hover {
+            background-color: #f85149;
+            border-color: #f85149;
+        }
+
+        /* Inline Real Envelope Styling inside Command Prompt Output */
+        .envelope-wrapper {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            background: #21262d;
+            border: 2px solid #30363d;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.03);
+            border-color: #f85149;
+        }
+
+        /* Envelope Flap */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 105px solid #30363d;
+            transform-origin: top;
+            transition: transform 0.4s ease 0.2s;
+            z-index: 3;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        /* Rose Seal Button on the Flap */
+        .envelope-seal {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            z-index: 4;
+            background: #161b22;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #f85149;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .envelope-seal:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Letter Slip - Nicely formatted & spacious */
+        .letter {
+            position: absolute;
+            bottom: 5px;
+            left: 12px;
+            right: 12px;
+            height: 185px;
+            background: #fdfefe;
+            color: #24292e;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 0.9em;
+            line-height: 1.6;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.25);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-105px);
+            z-index: 5;
+        }
+
+        .letter-content {
+            display: none;
+        }
+
+        .envelope.open .letter-content {
+            display: block;
+        }
+
+        .envelope-instruction {
+            text-align: center;
+            font-size: 0.8em;
+            color: #8b949e;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Rain Container -->
+    <div class="rain" id="rain-container"></div>
+
+    <!-- Stealthy Crescent Moon Easter Egg -->
+    <div class="crescent" id="crescent-moon" title="??"></div>
+
+    <div class="readme-container" id="main-content">
+        <!-- Header Section -->
+        <h1>Hi there, I'm pugsley 👋</h1>
+        
+        <p>🔭 I'm currently working on <strong>a song of my own, and my own roblox game.</strong></p>
+        <p>🌱 I'm currently learning <strong>Coding</strong></p>
+        <p>⚡ Fun fact: <strong>This website has nothing to hide, unlike yk?</strong></p>
+
+        <!-- Connect With Me -->
+        <h2>🌐 Connect with me</h2>
+        <div class="badges">
+            <a href="https://www.tiktok.com/@jakeisnthereanymore" target="_blank" class="badge">Tiktok (Main)</a>
+            <a href="https://www.tiktok.com/@randomaccountfor.stuff" target="_blank" class="badge">Tiktok (Alt.)</a>
+        </div>
+
+        <!-- Tech Stack -->
+        <h2>🛠️ Tech Stack & Tools</h2>
+        <p>Languages, frameworks, and utilities I love working with:</p>
+        <div class="badges">
+            <span class="badge">JavaScript / TypeScript</span>
+            <span class="badge">Python</span>
+            <span class="badge">HTML5 / CSS3</span>
+            <span class="badge">Git & GitHub</span>
+            <span class="badge">Lua</span>
+        </div>
+    </div>
+
+    <!-- Command Prompt Screen -->
+    <div id="cmd-overlay">
+        <div class="cmd-window">
+            <div class="cmd-header">
+                <span>secret command panel hehe</span>
+                <button class="cmd-close-btn" id="exit-cmd">CLOSE [X]</button>
+            </div>
+            <div class="cmd-output" id="cmd-output">Type 'help' to see available commands.
+</div>
+            <div class="cmd-input-line">
+                <span class="cmd-prompt-symbol">C:\pugsley></span>
+                <input type="text" id="cmd-input" class="cmd-input" autofocus autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate flowing raindrops dynamically
+        const rainContainer = document.getElementById('rain-container');
+        const numberOfDrops = 80;
+
+        for (let i = 0; i < numberOfDrops; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = (0.5 + Math.random() * 1.2) + 's';
+            drop.style.animationDelay = (Math.random() * 2) + 's';
+            drop.style.opacity = Math.random() * 0.6 + 0.2;
+            rainContainer.appendChild(drop);
+        }
+
+        // Crescent Moon Easter Egg Logic (Appears once a minute for 10 seconds)
+        const crescentMoon = document.getElementById('crescent-moon');
+        const cmdOverlay = document.getElementById('cmd-overlay');
+        const exitCmdBtn = document.getElementById('exit-cmd');
+
+        function triggerCrescent() {
+            crescentMoon.classList.add('visible');
+            setTimeout(() => {
+                crescentMoon.classList.remove('visible');
+            }, 10000); // Visible for 10 seconds
+        }
+
+        // Trigger once immediately for quick testing, then every 60 seconds
+        triggerCrescent();
+        setInterval(triggerCrescent, 60000);
+
+        // Terminal Interaction Logic
+        const cmdInput = document.getElementById('cmd-input');
+        const cmdOutput = document.getElementById('cmd-output');
+
+        crescentMoon.addEventListener('click', () => {
+            cmdOverlay.style.display = 'flex';
+            cmdInput.focus();
+        });
+
+        exitCmdBtn.addEventListener('click', () => {
+            cmdOverlay.style.display = 'none';
+        });
+
+        cmdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = cmdInput.value.trim().toLowerCase();
+                let response = '';
+
+                cmdOutput.innerText += `C:\\pugsley>${cmdInput.value}\n`;
+
+                switch (command) {
+                    case 'help':
+                        response = `Available commands:\n  about     - Displays system author info\n  secret    - Reveals hidden system logs\n  clear     - Clears the terminal screen\n  echo [txt]- Prints text back to terminal\n  matrix    - Wake up...\n  exit      - Closes the terminal interface\n`;
+                        break;
+                    case 'about':
+                        response = `System User: Pugsley\nProjects: Custom track song, Roblox development game\nStatus: Online & Coding\n`;
+                        break;
+                    case 'secret':
+                        response = `[LOG 04-2026]: Nothing to hide here... or is there? Keep looking through the rain.\n`;
+                        break;
+                    case 'banana':
+                        response = `🎉 SECRET UNLOCKED! You found the hidden banana command. Here is a virtual snack: 🍌\n`;
+                        break;
+                    case 'forever':
+                        response = `✨ You typed the magic word...\n`;
+                        cmdOutput.innerText += response;
+                        
+                        // Create the interactive envelope element directly in the terminal log with clean letter formatting
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'envelope-wrapper';
+                        wrapper.innerHTML = `
+                            <div>
+                                <div class="envelope" id="interactive-envelope">
+                                    <div class="envelope-flap"></div>
+                                    <div class="envelope-seal" title="Click to open">🌹</div>
+                                    <div class="letter">
+                                        <div class="letter-content">
+                                            <p style="margin: 0 0 10px 0;">You know, I still haven't moved on, but here I'am hoping for you to comeback.</p>
+                                            <p style="margin: 0 0 10px 0;">I'm sorry for you know, doing tests and whatnot, but I hope we can still be friends.</p>
+                                            <p style="margin: 0; text-align: right;"><strong>Hoping for your own success,
+- Pugsley</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="envelope-instruction">Click the rose envelope to open it</div>
+                            </div>
+                        `;
+                        cmdOutput.appendChild(wrapper);
+
+                        // Add click event for the generated envelope
+                        const envEl = wrapper.querySelector('#interactive-envelope');
+                        envEl.addEventListener('click', () => {
+                            envEl.classList.toggle('open');
+                        });
+
+                        cmdOutput.scrollTop = cmdOutput.scrollHeight;
+                        cmdInput.value = '';
+                        return;
+                    case 'clear':
+                        cmdOutput.innerText = '';
+                        cmdInput.value = '';
+                        return;
+                    case 'matrix':
+                        response = `The rabbit hole goes deeper. Follow the white rabbit (or just look at the moon).\n`;
+                        break;
+                    case 'exit':
+                        cmdOverlay.style.display = 'none';
+                        cmdInput.value = '';
+                        return;
+                    default:
+                        if (command.startsWith('echo ')) {
+                            response = `${command.substring(5)}\n`;
+                        } else if (command === '') {
+                            response = '';
+                        } else {
+                            response = `'${command}' is not recognized as an internal or external command. Type 'help' for options.\n`;
+                        }
+                }
+
+                cmdOutput.innerText += response;
+                cmdOutput.scrollTop = cmdOutput.scrollHeight;
+                cmdInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
