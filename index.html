@@ -27,18 +27,22 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+  html, body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    overflow-y: auto;
     -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
   }
 
   code, .mono { font-family: 'JetBrains Mono', monospace; }
 
-  /* Background gradient orbs */
   body::before {
     content: '';
     position: fixed;
@@ -51,7 +55,6 @@
     pointer-events: none;
   }
 
-  /* ===== RAIN CANVAS ===== */
   #rainCanvas {
     position: fixed;
     inset: 0;
@@ -60,61 +63,270 @@
     opacity: .4;
   }
 
-  /* ===== INTRO ===== */
-  #intro {
+/* ===== FAKE GITHUB PAGES 404 INTRO ===== */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #0d1117;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .5s ease;
+  cursor: default;
+}
+#intro.hide { opacity: 0; pointer-events: none; }
+
+.gh404-container {
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  color: #e6edf3;
+  padding: 0 24px;
+  max-width: 560px;
+  animation: introFadeIn 0.6s ease;
+}
+@keyframes introFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.gh404-code {
+  font-size: 6rem;
+  font-weight: 200;
+  margin-bottom: 8px;
+  letter-spacing: -4px;
+  background: linear-gradient(135deg, #e6edf3 0%, #7d8590 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gh404-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e6edf3;
+}
+
+.gh404-message {
+  font-size: 0.95rem;
+  color: #7d8590;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.gh404-submessage {
+  font-size: 0.85rem;
+  color: #7d8590;
+  margin-bottom: 32px;
+  line-height: 1.7;
+  padding: 16px 20px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  text-align: left;
+}
+
+.gh404-submessage a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+.gh404-submessage a:hover {
+  text-decoration: underline;
+}
+
+.gh404-footer-text {
+  font-size: 0.78rem;
+  color: #484f58;
+  margin-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 20px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: space-between;
+}
+.gh404-footer-text a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.gh404-octocat {
+  width: 40px;
+  height: 40px;
+  margin: 24px auto 0;
+  opacity: 0.3;
+  animation: octocatFloat 3s ease-in-out infinite;
+}
+@keyframes octocatFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}   
+  /* ===== BSOD SCREEN ===== */
+  #bsod {
     position: fixed;
     inset: 0;
-    z-index: 1000;
-    background: var(--bg);
+    z-index: 3000;
+    background: #0078d7;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10vw;
+  }
+  #bsod.show { display: flex; }
+
+  .bsod-face {
+    font-size: 7rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    line-height: 1;
+  }
+
+  .bsod-text {
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 800px;
+  }
+
+  .bsod-details {
     display: flex;
+    margin-top: 40px;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .bsod-qr {
+    width: 110px;
+    height: 110px;
+    background: #fff;
+    padding: 6px;
+    flex-shrink: 0;
+  }
+  .bsod-qr img { width: 100%; height: 100%; display: block; }
+
+  .bsod-info {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.95;
+  }
+
+  /* ===== WINDOWS BOOT SCREEN ===== */
+  #bootScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 4000;
+    background: #000000;
+    color: #fff;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: opacity .7s ease, transform .7s ease;
+    font-family: 'Segoe UI', sans-serif;
   }
-  #intro.hide { opacity: 0; transform: scale(1.04); pointer-events: none; }
+  #bootScreen.show { display: flex; }
 
-  .intro-logo {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 2.2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .spinner {
+    width: 44px;
+    height: 44px;
+    display: inline-block;
+    position: relative;
+    animation: rotate 1.4s linear infinite;
+  }
+  .spinner .dot {
+    width: 6px;
+    height: 6px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 19px;
+    animation: scaleDot 1.4s ease-in-out infinite;
+  }
+  .spinner .dot:nth-child(1) { transform: rotate(0deg) translate(0, 18px); animation-delay: 0s; }
+  .spinner .dot:nth-child(2) { transform: rotate(45deg) translate(0, 18px); animation-delay: 0.15s; }
+  .spinner .dot:nth-child(3) { transform: rotate(90deg) translate(0, 18px); animation-delay: 0.3s; }
+  .spinner .dot:nth-child(4) { transform: rotate(135deg) translate(0, 18px); animation-delay: 0.45s; }
+  .spinner .dot:nth-child(5) { transform: rotate(180deg) translate(0, 18px); animation-delay: 0.6s; }
+  .spinner .dot:nth-child(6) { transform: rotate(225deg) translate(0, 18px); animation-delay: 0.75s; }
+  .spinner .dot:nth-child(7) { transform: rotate(270deg) translate(0, 18px); animation-delay: 0.9s; }
+  .spinner .dot:nth-child(8) { transform: rotate(315deg) translate(0, 18px); animation-delay: 1.05s; }
+
+  @keyframes rotate { 100% { transform: rotate(360deg); } }
+  @keyframes scaleDot {
+    0%, 100% { transform: scale(0.6); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  /* ===== WINDOWS 11 LOGIN SCREEN ===== */
+  #loginScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 4900;
+    background: no-repeat center center/cover;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+  }
+  #loginScreen.show { display: flex; }
+
+  .login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeInUp 0.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .login-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    object-fit: cover;
+    margin-bottom: 20px;
+    background: #1a2235;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+
+  .login-name {
+    font-size: 1.8rem;
+    font-weight: 600;
     margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
   }
-  .intro-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .9rem;
-    color: var(--dim);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
 
-  .intro-key {
-    margin-top: 40px;
-    padding: 12px 28px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .82rem;
-    color: var(--muted);
-    background: rgba(255,255,255,.02);
+  .login-btn {
+    padding: 10px 28px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
     backdrop-filter: blur(10px);
   }
-
-  .intro-scan {
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: .5;
-    animation: scan 3s linear infinite;
+  .login-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
   }
-  @keyframes scan { 0%{top:0} 100%{top:100%} }
+  .login-btn:active {
+    transform: scale(0.97);
+  }
 
   /* ===== MAIN ===== */
   #main {
@@ -128,7 +340,6 @@
   }
   #main.show { opacity: 1; }
 
-  /* Profile Header */
   .profile-header {
     display: flex;
     align-items: center;
@@ -213,7 +424,6 @@
     transition: all .3s;
   }
 
-  /* Error toast */
   .error-toast {
     display: none;
     background: rgba(239,68,68,.08);
@@ -228,7 +438,6 @@
   .error-toast.show { display: block; animation: slideIn .3s ease; }
   @keyframes slideIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 
-  /* Spotify */
   .spotify-card {
     background: linear-gradient(135deg, rgba(16,185,129,.12) 0%, var(--surface) 60%);
     border: 1px solid rgba(16,185,129,.2);
@@ -266,7 +475,6 @@
   }
   @keyframes progress { 0%{width:0%} 100%{width:100%} }
 
-  /* Section titles */
   .section-title {
     font-size: .8rem;
     font-weight: 600;
@@ -286,7 +494,6 @@
   }
   .section-title .count { color: var(--dim); font-weight: 400; }
 
-  /* Cards Grid */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -359,7 +566,6 @@
   .badge-ttk { color: var(--text); border-color: var(--border); background: rgba(255,255,255,.04); }
   .badge-github { color: var(--green); border-color: rgba(16,185,129,.4); background: rgba(16,185,129,.08); }
 
-  /* README */
   .readme {
     background: var(--card);
     border: 1px solid var(--border);
@@ -403,7 +609,6 @@
     margin-right: 6px;
   }
 
-  /* Footer */
   .footer {
     margin-top: 40px;
     padding-top: 20px;
@@ -467,10 +672,7 @@
   .modal-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
   .modal-sub { font-size: .82rem; color: var(--muted); margin-bottom: 24px; }
 
-  /* Customizable username input */
-  .username-field {
-    margin-bottom: 16px;
-  }
+  .username-field { margin-bottom: 16px; }
   .username-field label {
     display: block;
     font-size: .72rem;
@@ -481,10 +683,7 @@
     font-weight: 600;
     text-align: left;
   }
-  .username-input-wrap {
-    display: flex;
-    gap: 8px;
-  }
+  .username-input-wrap { display: flex; gap: 8px; }
   .username-input {
     flex: 1;
     padding: 12px 14px;
@@ -536,7 +735,6 @@
   }
   .modal-invite:hover { background: rgba(255,255,255,.07); color: var(--text); border-color: rgba(255,255,255,.15); }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .profile-header { gap: 18px; }
     .avatar { width: 80px; height: 80px; }
@@ -550,12 +748,58 @@
 
 <canvas id="rainCanvas"></canvas>
 
-<!-- INTRO -->
-<div id="intro">
-  <div class="intro-scan"></div>
-  <div class="intro-logo"></div>
-  <div class="intro-text">Initializing Profile</div>
-  <div class="intro-key">[ press any key or click to enter ]</div>
+<!-- FAKE GITHUB PAGES 404 -->
+<div id="intro" onclick="startSequence()">
+  <div class="gh404-container">
+    <div class="gh404-code">404</div>
+    <div class="gh404-title">File not found</div>
+    <div class="gh404-message">The site configured at this address does not contain the requested file.</div>
+    <div class="gh404-submessage">
+      If this is your site, make sure that the filename case matches the URL.<br>
+      For root URLs (like <code>http://example.com/</code>) you must provide an <code>index.html</code> file.<br><br>
+      <a href="https://docs.github.com/pages" target="_blank">Read the full documentation</a> for more information about using <strong>GitHub Pages</strong>.
+    </div>
+    <div class="gh404-footer-text">
+      <span>GitHub Status &mdash; <a href="https://www.githubstatus.com" target="_blank">@githubstatus</a></span>
+    </div>
+    <svg class="gh404-octocat" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8z"/>
+    </svg>
+  </div>
+</div>
+
+<!-- FAKE BSOD SCREEN -->
+<div id="bsod">
+  <div class="bsod-face">:(</div>
+  <div class="bsod-text" id="bsodText">Your PC ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you. (restarting in 5...)</div>
+  <div class="bsod-details">
+    <div class="bsod-qr">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" width="100%" height="100%" shape-rendering="crispEdges">
+        <path fill="#fff" d="M0 0h29v29H0z"/>
+        <path fill="#000" d="M0 0h8v8H0zM2 2h4v4H2zM10 0h3v1h-3zM14 0h1v1h-1zM16 0h2v1h-2zM19 0h1v2h-1zM21 0h8v8H21zM23 2h4v4H23zM2 10h1v1H2zM4 10h3v1H4zM8 10h1v1H8zM10 10h1v1h-1zM13 10h2v1h-2zM16 10h1v1H-1zM18 10h2v1h-2zM21 10h1v1H-1zM23 10h1v1H-1zM26 10h1v1H-1zM0 12h1v1H0zM3 12h1v1H3zM5 12h1v1H5zM8 12h3v1H8zM12 12h2v1h-2zM15 12h2v1h-2zM18 12h1v1H-1zM20 12h2v1h-2zM24 12h1v1H-1zM26 12h3v1H-3zM1 14h2v1H1zM4 14h2v1H4zM8 14h1v1H8zM11 14h1v1H-1zM13 14h3v1h-3zM18 14h2v1H-2zM22 14h1v1H-1zM24 14h1v1H-1zM26 14h1v1H-1zM0 16h2v1H0zM3 16h1v1H3zM6 16h1v1H6zM8 16h2v1H8zM11 16h2v1H-2zM14 16h2v1H-2zM17 16h1v1H-1zM19 16h2v1H-2zM22 16h2v1H-2zM26 16h2v1H-2zM1 18h3v1H1zM5 18h1v1H5zM8 18h2v1H8zM11 18h1v1H-1zM13 18h3v1h-3zM17 18h1v1H-1zM19 18h2v1H-2zM22 18h1v1H-1zM24 18h2v1H-2zM27 18h1v1H-1zM0 20h2v1H0zM3 20h1v1H3zM5 20h2v1H5zM8 20h1v1H8zM10 20h2v1H-2zM13 20h2v1H-2zM16 20h3v1H-3zM21 20h7v8H21zM23 22h3v4H23zM0 21h7v1H0zM9 21h1v1H9zM11 21h2v1H-2zM14 21h1v1H-1zM16 21h2v1H-2zM19 21h1v1H-1zM0 23h1v1H0zM3 23h1v1H3zM5 23h1v1H5zM9 23h3v1H9zM13 23h1v1H-1zM15 23h1v1H-1zM18 23h2v1H-2zM0 25h7v1H0zM9 25h2v1H9zM12 25h1v1H-1zM14 25h2v1H-2zM17 25h1v1H-1zM19 25h1v1H-1zM0 27h7v1H0zM9 27h2v1H9zM12 27h3v1H-3zM16 27h2v1H-2zM19 27h1v1H-1z"/>
+      </svg>
+    </div>
+    <div class="bsod-info">
+      For more information about this issue and possible fixes, visit https://windows.com/stopcode
+    </div>
+  </div>
+</div>
+
+<!-- WINDOWS BOOT SCREEN -->
+<div id="bootScreen">
+  <div class="spinner">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+</div>
+
+<!-- WINDOWS 11 LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <img id="loginAvatar" class="login-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%231a2235' width='100' height='100' rx='50'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='%2364748b' font-size='36' font-family='sans-serif'%3E%3C/text%3E%3C/svg%3E" alt="avatar">
+    <div class="login-name" id="loginUsername">pugsley</div>
+    <button class="login-btn" onclick="completeLogin()">Log in</button>
+  </div>
 </div>
 
 <!-- DISCORD MODAL -->
@@ -631,6 +875,23 @@
 </div>
 
 <script>
+// ==================== WALLPAPER ====================
+async function setWallpaper() {
+  try {
+    const res = await fetch("windows-11-dark-mode-abstract-background-black-background-3840x2160-8710_2.jpg");
+    const blob = await res.blob();
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      document.getElementById('loginScreen').style.backgroundImage = `url(${reader.result})`;
+    };
+    reader.readAsDataURL(blob);
+  } catch (e) {
+    const fallbackBg = "url('windows-11-dark-mode-abstract-background-black-background-3840x2160-8710_2.jpg')";
+    document.getElementById('loginScreen').style.backgroundImage = fallbackBg;
+  }
+}
+setWallpaper();
+
 // ==================== RAIN ====================
 const canvas = document.getElementById('rainCanvas');
 const ctx = canvas.getContext('2d');
@@ -717,25 +978,72 @@ const README_HTML = `
   </p>
 `;
 
-// ==================== INTRO ====================
+// ==================== SEQUENCE ====================
 const intro = document.getElementById('intro');
+const bsod = document.getElementById('bsod');
+const bootScreen = document.getElementById('bootScreen');
+const loginScreen = document.getElementById('loginScreen');
 const main = document.getElementById('main');
+let sequenceTriggered = false;
 
-function enter() {
-  if (intro.classList.contains('hide')) return;
-  intro.classList.add('hide');
-  main.classList.add('show');
-  setTimeout(() => intro.remove(), 800);
+function requestFullscreen() {
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen().catch(() => {});
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
 }
-document.addEventListener('keydown', enter);
-intro.addEventListener('click', enter);
+
+function startSequence() {
+  if (sequenceTriggered) return;
+  sequenceTriggered = true;
+
+  requestFullscreen();
+  intro.classList.add('hide');
+  bsod.classList.add('show');
+
+  let timeLeft = 5;
+  const textEl = document.getElementById('bsodText');
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    if (timeLeft > 0) {
+      textEl.textContent = `Your PC ran into a problem and needs to restart. We're just collecting some error info, and then we'll restart for you. (restarting in ${timeLeft}...)`;
+    } else {
+      clearInterval(timer);
+      bsod.classList.remove('show');
+      bootScreen.classList.add('show');
+
+      setTimeout(() => {
+        bootScreen.classList.remove('show');
+        loginScreen.classList.add('show');
+      }, 3000);
+    }
+  }, 1000);
+}
+
+function completeLogin() {
+  loginScreen.classList.remove('show');
+  main.classList.add('show');
+  if (document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!sequenceTriggered) {
+    startSequence();
+  }
+});
 
 // ==================== MODAL ====================
 const modal = document.getElementById('discordModal');
 
 function openModal() {
   modal.classList.add('show');
-  // Focus the input so user can immediately edit
   setTimeout(() => document.getElementById('discordUsername').select(), 100);
 }
 function closeModal() { modal.classList.remove('show'); }
@@ -763,7 +1071,6 @@ function copyUsername() {
   });
 }
 
-// Allow Enter key in input to copy
 document.getElementById('discordUsername').addEventListener('keydown', e => {
   if (e.key === 'Enter') copyUsername();
 });
@@ -834,13 +1141,15 @@ async function fetchStatus() {
 
     const avId = d.discord_user?.avatar;
     if (avId) {
-      document.getElementById('avatar').src =
-        `https://cdn.discordapp.com/avatars/${d.discord_user.id}/${avId}.png?size=256`;
+      const avatarUrl = `https://cdn.discordapp.com/avatars/${d.discord_user.id}/${avId}.png?size=256`;
+      document.getElementById('avatar').src = avatarUrl;
+      document.getElementById('loginAvatar').src = avatarUrl;
     }
 
-    const name = d.discord_user?.global_name || d.discord_user?.username || 'unknown';
+    const name = d.discord_user?.global_name || d.discord_user?.username || 'pugsley';
     document.getElementById('displayName').innerHTML =
       `${name}<span class="handle">@${d.discord_user?.username || 'user'}</span>`;
+    document.getElementById('loginUsername').textContent = name;
 
     const st = statusMap[d.discord_status] || statusMap.offline;
     const icon = statusIcons[d.discord_status] || statusIcons.offline;
